@@ -1,24 +1,30 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context'; // CORRECT IMPORT
 
 export default function HomeScreen({ route, navigation }) {
   const { email } = route.params || { email: 'User' };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.label}>Logged in as:</Text>
+      <View style={styles.header}>
+        <Text style={styles.label}>Welcome,</Text>
         <Text style={styles.email}>{email}</Text>
-        
-        <View style={styles.statusBox}>
-          <Text style={styles.statusText}>Authentication Successful ✅</Text>
-        </View>
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity 
+          style={[styles.mainButton, { backgroundColor: '#d32f2f' }]}
+          onPress={() => console.log('Donor Pressed')}
+        >
+          <Text style={styles.buttonText}>Donor</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity 
-          style={styles.logoutBtn} 
-          onPress={() => navigation.replace('Login')}
+          style={[styles.mainButton, { backgroundColor: '#2563EB' }]}
+          onPress={() => console.log('Want Blood Pressed')}
         >
-          <Text style={styles.logoutText}>Sign Out</Text>
+          <Text style={styles.buttonText}>Want Blood?</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -27,11 +33,22 @@ export default function HomeScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
-  content: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 },
-  label: { fontSize: 16, color: '#888' },
-  email: { fontSize: 22, fontWeight: 'bold', color: '#007AFF', marginBottom: 30 },
-  statusBox: { backgroundColor: '#e8f5e9', padding: 20, borderRadius: 15, width: '100%' },
-  statusText: { color: '#2e7d32', textAlign: 'center', fontWeight: '500' },
-  logoutBtn: { marginTop: 50 },
-  logoutText: { color: '#ff3b30', fontSize: 16, fontWeight: 'bold' }
+  header: { padding: 20 },
+  email: { fontSize: 18, fontWeight: 'bold' },
+  buttonContainer: { 
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    padding: 20 
+  },
+  mainButton: {
+    width: '100%',
+    height: 100,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    elevation: 3
+  },
+  buttonText: { color: '#fff', fontSize: 20, fontWeight: 'bold' }
 });
