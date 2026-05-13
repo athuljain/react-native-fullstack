@@ -27,11 +27,11 @@ function AuthStack({ setIsLoggedIn }) {
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  return (
+return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Tab.Navigator screenOptions={{ tabBarActiveTintColor: '#d32f2f' }}>
+        <Tab.Navigator>
+          {/* Always keep Home as the first screen if you want to navigate to it */}
           <Tab.Screen name="Home" component={HomeScreen} />
           
           <Tab.Screen name="Profile" component={ProfileScreen} />
@@ -45,11 +45,10 @@ export default function App() {
                   setIsLoggedIn(false);
                 },
               }}
-              component={HomeScreen} // Placeholder component
+              component={HomeScreen} 
             />
           ) : (
             <Tab.Screen name="Auth">
-              {/* Ensure this is a render function like this */}
               {() => <AuthStack setIsLoggedIn={setIsLoggedIn} />}
             </Tab.Screen>
           )}

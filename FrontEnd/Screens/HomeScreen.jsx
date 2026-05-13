@@ -3,13 +3,13 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'; // CORRECT IMPORT
 
 export default function HomeScreen({ route, navigation }) {
-  const { email } = route.params || { email: 'User' };
+  const { email ,userName} = route.params || { email: '',userName:'User' };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.label}>Welcome,</Text>
-        <Text style={styles.email}>{email}</Text>
+<Text style={styles.userName}>{userName}</Text>
       </View>
 
       <View style={styles.buttonContainer}>

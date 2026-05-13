@@ -72,12 +72,9 @@ router.post('/login', async (req, res) => {
         // Find user by email OR contactNum
         // Now that contactNum is a String, Mongoose won't crash 
         // when searching for an email address in that field.
-        const user = await User.findOne({
-            $or: [
-                { email: identifier },
-                { contactNum: identifier }
-            ]
-        });
+       const user = await User.findOne({ 
+  $or: [{ email: identifier }, { contactNum: identifier }] 
+});
 
         if (!user) {
             return res.status(400).json({ message: "Invalid credentials" });

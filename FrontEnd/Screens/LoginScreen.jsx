@@ -204,7 +204,7 @@ export default function LoginScreen({ navigation, setIsLoggedIn }) {
       if (response.ok) {
         setIsLoggedIn(true);
          Alert.alert("Login Success!...")
-        navigation.replace('Home', { email: data.email });
+        navigation.navigate('Home', { email: data.email,userName:data.name });
       } else {
         Alert.alert("Login Failed", data.message || "Invalid credentials");
       }
