@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
     age:{type:Number,required:true},
     district: { type: String, required: true },
     village: { type: String, required: true },
-    role: { type: String, default: 'User' },
+    role: { type: String, default: 'User',enum: ['User', 'Admin'] },
     profileImage: { type: String, default: null },
     lastDonationDate: { type: Date, default: null }, 
     donationCount: { type: Number, default: 0 }

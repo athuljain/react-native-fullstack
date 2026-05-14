@@ -39,33 +39,63 @@ router.post('/register', async (req, res) => {
 
 
 
-// routes/auth.js
+// // routes/auth.js
+// router.post('/login', async (req, res) => {
+//     try {
+//         const { identifier, password } = req.body;
+
+     
+//        const user = await User.findOne({ 
+//   $or: [{ email: identifier }, { contactNum: identifier }] 
+// });
+
+//         if (!user) {
+//             return res.status(400).json({ message: "Invalid credentials" });
+//         }
+
+//         const isMatch = await bcrypt.compare(password, user.password);
+//         if (!isMatch) {
+//             return res.status(400).json({ message: "Invalid credentials" });
+//         }
+
+//         const token = jwt.sign({ id: user._id }, "SECRET_KEY", { expiresIn: '1d' });
+//         res.json({ token, email: user.email, name: user.name });
+
+//     } catch (err) {
+//         console.error("Login Error:", err);
+//         res.status(500).json({ error: "Server Error" });
+//     }
+// });
+
+
+
 router.post('/login', async (req, res) => {
     try {
         const { identifier, password } = req.body;
+        const user = await User.findOne({ $or: [{ email: identifier }, { contactNum: identifier }] });
 
-     
-       const user = await User.findOne({ 
-  $or: [{ email: identifier }, { contactNum: identifier }] 
-});
-
-        if (!user) {
+        if (!user || !(await bcrypt.compare(password, user.password))) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ message: "Invalid credentials" });
-        }
-
-        const token = jwt.sign({ id: user._id }, "SECRET_KEY", { expiresIn: '1d' });
-        res.json({ token, email: user.email, name: user.name });
-
+        const token = jwt.sign({ id: user._id, role: user.role }, "SECRET_KEY", { expiresIn: '1d' });
+        
+        // Include the role in the response
+        res.json({ 
+            token, 
+            email: user.email, 
+            name: user.name, 
+            role: user.role 
+        });
     } catch (err) {
-        console.error("Login Error:", err);
         res.status(500).json({ error: "Server Error" });
     }
 });
+
+
+
+
+
 
 router.post('/logout', (req, res) => {
   res.status(200).json({ message: "Logout successful" });

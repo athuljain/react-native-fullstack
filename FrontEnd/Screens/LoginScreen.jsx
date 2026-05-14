@@ -29,7 +29,7 @@ const handleLogin = async () => {
 
       if (response.ok) {
       
-        onLoginSuccess(data.email, data.name); 
+        onLoginSuccess(data.email, data.name,data.role); 
         
      
         setIsLoggedIn(true); 
