@@ -3,6 +3,9 @@ const router=express.Router()
 const User=require("../models/User")
 const bcrypt =require('bcryptjs')
 const jwt=require('jsonwebtoken')
+const BloodRequest=require("../models/BloodRequest")
+
+
 
 router.post('/register', async (req, res) => {
     try {
@@ -124,6 +127,29 @@ router.put('/update-profile', async (req, res) => {
         res.json(updatedUser);
     } catch (err) {
         res.status(500).json({ message: "Update failed" });
+    }
+});
+
+
+
+// POST: Create a blood request
+router.post('/blood-request', async (req, res) => {
+    try {
+        const newRequest = new BloodRequest(req.body);
+        await newRequest.save();
+        res.status(201).json({ message: "Request submitted successfully" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// GET: Fetch all requests for Admin
+router.get('/all-requests', async (req, res) => {
+    try {
+        const requests = await BloodRequest.find().sort({ createdAt: -1 });
+        res.json(requests);
+    } catch (err) {
+        res.status(500).json({ error: "Failed to fetch requests" });
     }
 });
 

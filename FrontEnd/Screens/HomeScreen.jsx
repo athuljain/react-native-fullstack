@@ -2,13 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'; // CORRECT IMPORT
 
-export default function HomeScreen({ route}) {
+export default function HomeScreen({ route,navigation}) {
   const { userName, email } = route.params || {};
   return (
    <SafeAreaView style={styles.container}>
    <View style={styles.header}>
         <Text style={styles.label}>Welcome,</Text>
-        {/* Use the variable from params */}
+      
         <Text style={styles.userNameText}>{userName || 'User'}</Text>
       </View>
 
@@ -20,12 +20,12 @@ export default function HomeScreen({ route}) {
           <Text style={styles.buttonText}>Donor</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
-          style={[styles.mainButton, { backgroundColor: '#2563EB' }]}
-          onPress={() => console.log('Want Blood Pressed')}
-        >
-          <Text style={styles.buttonText}>Want Blood?</Text>
-        </TouchableOpacity>
+       <TouchableOpacity 
+  style={[styles.mainButton, { backgroundColor: '#2563EB' }]}
+  onPress={() => navigation.navigate('BloodRequest')}
+>
+  <Text style={styles.buttonText}>Want Blood?</Text>
+</TouchableOpacity>
       </View>
     </SafeAreaView>
   );

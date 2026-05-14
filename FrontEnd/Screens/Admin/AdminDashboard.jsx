@@ -1,28 +1,38 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 
 export default function AdminDashboard() {
-  return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Admin Control Center</Text>
-      </View>
-      
-      <View style={styles.statGrid}>
-        <View style={styles.card}><Text style={styles.cardText}>Total Donors: 24</Text></View>
-        <View style={styles.card}><Text style={styles.cardText}>Urgent Needs: 3</Text></View>
-      </View>
-      
-      {/* Admin specific content goes here */}
-    </ScrollView>
-  );
+    const [requests, setRequests] = useState([]);
+
+    useEffect(() => {
+        fetch('https://staring-scroll-duffel.ngrok-free.dev/api/auth/all-requests')
+            .then(res => res.json())
+            .then(data => setRequests(data));
+    }, []);
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.header}>New Blood Requests ({requests.length})</Text>
+            <FlatList
+                data={requests}
+                keyExtractor={(item) => item._id}
+                renderItem={({ item }) => (
+                    <View style={styles.requestCard}>
+                        <Text style={styles.patientName}>{item.patientFirstName} {item.patientLastName}</Text>
+                        <Text>Blood Group: {item.bloodGroup} | Quantity: {item.quantity}</Text>
+                        <Text>Hospital: {item.hospital}, {item.district}</Text>
+                        <Text style={styles.date}>Needed by: {item.requiredDate}</Text>
+                    </View>
+                )}
+            />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f5f5f5' },
-  header: { padding: 20, backgroundColor: '#d32f2f' },
-  title: { color: '#fff', fontSize: 22, fontWeight: 'bold' },
-  statGrid: { flexDirection: 'row', padding: 10, justifyContent: 'space-between' },
-  card: { backgroundColor: '#fff', padding: 20, borderRadius: 10, width: '48%', elevation: 2 },
-  cardText: { fontWeight: 'bold' }
+    container: { flex: 1, padding: 20, backgroundColor: '#F3F4F6' },
+    header: { fontSize: 20, fontWeight: 'bold', marginBottom: 15 },
+    requestCard: { backgroundColor: '#fff', padding: 15, borderRadius: 10, marginBottom: 10, elevation: 2 },
+    patientName: { fontSize: 16, fontWeight: 'bold', color: '#d32f2f' },
+    date: { color: '#666', marginTop: 5, fontStyle: 'italic' }
 });
