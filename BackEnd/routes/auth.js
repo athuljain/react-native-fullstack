@@ -37,16 +37,6 @@ router.post('/register', async (req, res) => {
     }
 });
 
-//Login
-// router.post('/login', async (req, res) => {
-//   const { email, password } = req.body;
-//   const user = await User.findOne({ email });
-//   if (!user || !(await bcrypt.compare(password, user.password))) {
-//     return res.status(400).json({ message: "Invalid credentials" });
-//   }
-//   const token = jwt.sign({ id: user._id }, "SECRET_KEY");
-//   res.json({ token, email: user.email });
-// });
 
 
 // routes/auth.js
@@ -94,11 +84,11 @@ router.get('/profile/:email', async (req, res) => {
 
 // UPDATE User details
 router.put('/update-profile', async (req, res) => {
-    const { email, name, contactNum, district, village, profileImage } = req.body;
+    const { email, name, contactNum, district, village, profileImage, lastDonationDate, donationCount } = req.body;
     try {
         const updatedUser = await User.findOneAndUpdate(
             { email },
-            { name, contactNum, district, village, profileImage },
+            { name, contactNum, district, village, profileImage, lastDonationDate, donationCount },
             { new: true }
         ).select("-password");
         res.json(updatedUser);

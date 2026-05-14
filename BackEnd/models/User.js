@@ -21,7 +21,9 @@ const UserSchema = new mongoose.Schema({
     district: { type: String, required: true },
     village: { type: String, required: true },
     role: { type: String, default: 'User' },
-    profileImage: { type: String, default: null }
+    profileImage: { type: String, default: null },
+    lastDonationDate: { type: Date, default: null }, 
+    donationCount: { type: Number, default: 0 }
 });
 
 

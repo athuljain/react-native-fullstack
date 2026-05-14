@@ -1,172 +1,5 @@
-// import React, { useState } from 'react';
-// import { 
-//   View, 
-//   Text, 
-//   TextInput, 
-//   TouchableOpacity, 
-//   StyleSheet, 
-//   Alert, 
-//   KeyboardAvoidingView, 
-//   Platform 
-// } from 'react-native';
 
-// export default function LoginScreen({ navigation, setIsLoggedIn }) {
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-
-//   const handleLogin = async () => {
-//     if (!email || !password) {
-//       Alert.alert("Error", "Please fill in all fields");
-//       return;
-//     }
-
-//   try {
-//       const response = await fetch('https://staring-scroll-duffel.ngrok-free.dev/api/auth/login', {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({ email, password }),
-//       });
-
-//       const data = await response.json();
-
-//       if (response.ok) {
-      
-//       setIsLoggedIn(true);
-        
-//         navigation.replace('Home', { email: data.email });
-//       } else {
-//         Alert.alert("Login Failed", data.message || "Invalid credentials");
-//       }
-//     } catch (error) {
-      
-//       console.log("Login Error: ", error);
-//       Alert.alert("Network Error", "Unable to connect to the server.");
-//     }
-//   };
-
-//   return (
-//     <KeyboardAvoidingView 
-//       behavior={Platform.OS === "ios" ? "padding" : "height"}
-//       style={styles.container}
-//     >
-//       <View style={styles.card}>
-//         <Text style={styles.title}>Welcome Back</Text>
-//         <Text style={styles.subtitle}>Log in to your account to continue</Text>
-
-//         <View style={styles.inputContainer}>
-//           <Text style={styles.label}>Email Address</Text>
-//           <TextInput 
-//             placeholder="name@example.com" 
-//             style={styles.input} 
-//             onChangeText={setEmail}
-//             autoCapitalize="none"
-//             keyboardType="email-address"
-//           />
-//         </View>
-
-//         <View style={styles.inputContainer}>
-//           <Text style={styles.label}>Password</Text>
-//           <TextInput 
-//             placeholder="Enter your password" 
-//             style={styles.input} 
-//             secureTextEntry 
-//             onChangeText={setPassword} 
-//           />
-//         </View>
-
-//         <TouchableOpacity style={styles.button} onPress={handleLogin}>
-//           <Text style={styles.buttonText}>Login</Text>
-//         </TouchableOpacity>
-
-//         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-//           <Text style={styles.link}>
-//             Don't have an account? <Text style={styles.linkBold}>Register</Text>
-//           </Text>
-//         </TouchableOpacity>
-//       </View>
-//     </KeyboardAvoidingView>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: { 
-//     flex: 1, 
-//     backgroundColor: '#F3F4F6', // Light gray background
-//     justifyContent: 'center', 
-//     padding: 20 
-//   },
-//   card: {
-//     backgroundColor: '#FFFFFF',
-//     borderRadius: 20,
-//     padding: 30,
-//     shadowColor: '#000',
-//     shadowOffset: { width: 0, height: 10 },
-//     shadowOpacity: 0.1,
-//     shadowRadius: 10,
-//     elevation: 5, // For Android shadow
-//   },
-//   title: { 
-//     fontSize: 28, 
-//     fontWeight: '800', 
-//     color: '#1F2937', 
-//     textAlign: 'center',
-//     marginBottom: 5
-//   },
-//   subtitle: {
-//     fontSize: 14,
-//     color: '#6B7280',
-//     textAlign: 'center',
-//     marginBottom: 30,
-//   },
-//   inputContainer: {
-//     marginBottom: 20,
-//   },
-//   label: {
-//     fontSize: 14,
-//     fontWeight: '600',
-//     color: '#374151',
-//     marginBottom: 8,
-//     marginLeft: 4,
-//   },
-//   input: { 
-//     backgroundColor: '#F9FAFB',
-//     borderWidth: 1, 
-//     borderColor: '#E5E7EB',
-//     borderRadius: 12,
-//     padding: 15,
-//     fontSize: 16,
-//   },
-//   button: { 
-//     backgroundColor: '#2563EB', // Modern blue
-//     paddingVertical: 16,
-//     borderRadius: 12,
-//     alignItems: 'center',
-//     marginTop: 10,
-//     shadowColor: '#2563EB',
-//     shadowOffset: { width: 0, height: 4 },
-//     shadowOpacity: 0.3,
-//     shadowRadius: 5,
-//     elevation: 3,
-//   },
-//   buttonText: { 
-//     color: '#FFFFFF', 
-//     fontSize: 18, 
-//     fontWeight: '700' 
-//   },
-//   link: { 
-//     marginTop: 25, 
-//     color: '#6B7280', 
-//     textAlign: 'center',
-//     fontSize: 14 
-//   },
-//   linkBold: {
-//     color: '#2563EB',
-//     fontWeight: '700',
-//   }
-// });
-
-
-import React, { useState } from 'react'; // FIXED: Added useState import
+import React, { useState } from 'react'; 
 import { 
   View, 
   Text, 
@@ -184,7 +17,7 @@ export default function LoginScreen({ navigation, setIsLoggedIn, onLoginSuccess 
   const [password, setPassword] = useState('');
 
 const handleLogin = async () => {
-    // ... validation ...
+   
     try {
       const response = await fetch('https://staring-scroll-duffel.ngrok-free.dev/api/auth/login', {
         method: 'POST',
@@ -195,14 +28,13 @@ const handleLogin = async () => {
       const data = await response.json();
 
       if (response.ok) {
-        // 1. Save data to global state first
+      
         onLoginSuccess(data.email, data.name); 
         
-        // 2. Trigger the navigator swap
+     
         setIsLoggedIn(true); 
         
-        // REMOVE THIS LINE: navigation.navigate('Home', ...) 
-        // It causes the "not handled by any navigator" error.
+      
       } else {
         Alert.alert("Login Failed", data.message || "Invalid credentials");
       }
