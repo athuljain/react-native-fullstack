@@ -4,21 +4,6 @@ const User=require("../models/User")
 const bcrypt =require('bcryptjs')
 const jwt=require('jsonwebtoken')
 
-//Register
-// router.post('/register',async (req,res)=>{
-//     try{
-//         const {email,password}=req.body;
-//         const hashedPassword=await bcrypt.hash(password,10);
-//         const newUser=new User({
-//             email,password:hashedPassword
-//         })
-//         await newUser.save();
-//         res.status(201).json({message:"user created"})
-//     }catch(err){
-//         res.status(500).json({error:err.message})
-//     }
-// })
-
 router.post('/register', async (req, res) => {
     try {
         // Log the body to see what is arriving from the mobile app
@@ -69,9 +54,7 @@ router.post('/login', async (req, res) => {
     try {
         const { identifier, password } = req.body;
 
-        // Find user by email OR contactNum
-        // Now that contactNum is a String, Mongoose won't crash 
-        // when searching for an email address in that field.
+     
        const user = await User.findOne({ 
   $or: [{ email: identifier }, { contactNum: identifier }] 
 });
@@ -97,5 +80,32 @@ router.post('/login', async (req, res) => {
 router.post('/logout', (req, res) => {
   res.status(200).json({ message: "Logout successful" });
 });
+
+
+// GET User details
+router.get('/profile/:email', async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.params.email }).select("-password");
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+// UPDATE User details
+router.put('/update-profile', async (req, res) => {
+    const { email, name, contactNum, district, village, profileImage } = req.body;
+    try {
+        const updatedUser = await User.findOneAndUpdate(
+            { email },
+            { name, contactNum, district, village, profileImage },
+            { new: true }
+        ).select("-password");
+        res.json(updatedUser);
+    } catch (err) {
+        res.status(500).json({ message: "Update failed" });
+    }
+});
+
 
 module.exports = router;

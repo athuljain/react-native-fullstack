@@ -20,7 +20,8 @@ const UserSchema = new mongoose.Schema({
     age:{type:Number,required:true},
     district: { type: String, required: true },
     village: { type: String, required: true },
-    role: { type: String, default: 'User' }
+    role: { type: String, default: 'User' },
+    profileImage: { type: String, default: null }
 });
 
 

@@ -2,14 +2,14 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'; // CORRECT IMPORT
 
-export default function HomeScreen({ route, navigation }) {
-  const { email ,userName} = route.params || { email: '',userName:'User' };
-
+export default function HomeScreen({ route}) {
+  const { userName, email } = route.params || {};
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+   <SafeAreaView style={styles.container}>
+   <View style={styles.header}>
         <Text style={styles.label}>Welcome,</Text>
-<Text style={styles.userName}>{userName}</Text>
+        {/* Use the variable from params */}
+        <Text style={styles.userNameText}>{userName || 'User'}</Text>
       </View>
 
       <View style={styles.buttonContainer}>

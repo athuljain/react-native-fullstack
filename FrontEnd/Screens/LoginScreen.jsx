@@ -179,32 +179,30 @@ import {
   ScrollView 
 } from 'react-native';
 
-export default function LoginScreen({ navigation, setIsLoggedIn }) {
+export default function LoginScreen({ navigation, setIsLoggedIn, onLoginSuccess }) {
   const [identifier, setIdentifier] = useState(''); 
   const [password, setPassword] = useState('');
 
-  const handleLogin = async () => {
-    if (!identifier || !password) {
-      Alert.alert("Error", "Please fill in all fields");
-      return;
-    }
-
+const handleLogin = async () => {
+    // ... validation ...
     try {
       const response = await fetch('https://staring-scroll-duffel.ngrok-free.dev/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          identifier: identifier, 
-          password: password 
-        }),
+        body: JSON.stringify({ identifier, password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        setIsLoggedIn(true);
-         Alert.alert("Login Success!...")
-        navigation.navigate('Home', { email: data.email,userName:data.name });
+        // 1. Save data to global state first
+        onLoginSuccess(data.email, data.name); 
+        
+        // 2. Trigger the navigator swap
+        setIsLoggedIn(true); 
+        
+        // REMOVE THIS LINE: navigation.navigate('Home', ...) 
+        // It causes the "not handled by any navigator" error.
       } else {
         Alert.alert("Login Failed", data.message || "Invalid credentials");
       }
