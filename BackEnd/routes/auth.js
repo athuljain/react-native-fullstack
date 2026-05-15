@@ -42,33 +42,6 @@ router.post('/register', async (req, res) => {
 
 
 
-// // routes/auth.js
-// router.post('/login', async (req, res) => {
-//     try {
-//         const { identifier, password } = req.body;
-
-     
-//        const user = await User.findOne({ 
-//   $or: [{ email: identifier }, { contactNum: identifier }] 
-// });
-
-//         if (!user) {
-//             return res.status(400).json({ message: "Invalid credentials" });
-//         }
-
-//         const isMatch = await bcrypt.compare(password, user.password);
-//         if (!isMatch) {
-//             return res.status(400).json({ message: "Invalid credentials" });
-//         }
-
-//         const token = jwt.sign({ id: user._id }, "SECRET_KEY", { expiresIn: '1d' });
-//         res.json({ token, email: user.email, name: user.name });
-
-//     } catch (err) {
-//         console.error("Login Error:", err);
-//         res.status(500).json({ error: "Server Error" });
-//     }
-// });
 
 
 
@@ -153,5 +126,18 @@ router.get('/all-requests', async (req, res) => {
     }
 });
 
+router.get('/all-donors', async (req, res) => {
+    try {
+        // Fetch users where role is 'User' (ignore admins)
+        // .select("-password") is very important for security!
+        const donors = await User.find({ role: 'User' }).select("-password");
+        
+        console.log("Donors found:", donors.length); // Check your server terminal
+        res.status(200).json(donors);
+    } catch (err) {
+        console.error("Error in /all-donors:", err);
+        res.status(500).json({ error: "Server Error" });
+    }
+});
 
 module.exports = router;

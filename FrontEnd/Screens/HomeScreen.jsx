@@ -15,7 +15,7 @@ export default function HomeScreen({ route,navigation}) {
       <View style={styles.buttonContainer}>
         <TouchableOpacity 
           style={[styles.mainButton, { backgroundColor: '#d32f2f' }]}
-          onPress={() => console.log('Donor Pressed')}
+          onPress={() => navigation.navigate('DonorDetails',{email:email})}
         >
           <Text style={styles.buttonText}>Donor</Text>
         </TouchableOpacity>
